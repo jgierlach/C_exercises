@@ -1,4 +1,3 @@
-/* KR p. 76-79 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -8,9 +7,11 @@
 
 #define MAXOP 100
 #define NUMBER '0'
+#define FUNCTION 'f'
 
 int getop(char []);
 void push(double);
+void checkFunction(char[]);
 double pop(void);
 void swap();
 
@@ -22,6 +23,9 @@ main()
 
   while((type = getop(s)) != EOF){
     switch(type){
+    case FUNCTION:
+      checkFunction(s);
+      break;
     case NUMBER:
       push(atof(s));
       break;
@@ -88,6 +92,19 @@ int getop(char s[])
   while ((s[0] = c = getch()) == ' ' || c == '\t')
     ;
   s[1] = '\0';
+  if(isalpha(c)) {
+    while(isalpha(s[++i] = c = getch()))
+     ;
+     s[i] = '\0';
+    if(c != EOF) 
+      ungetch(c);
+    if(strlen(s) > 1) { 
+      return FUNCTION;
+    } else {
+      return c;
+    }
+  }
+
   if(!isdigit(c) && c != '.')
     return c; /* not a number */
   i = 0;
@@ -131,3 +148,13 @@ void ungetch(int c)
       buf[bufp++] = c;
     }
 }
+
+void checkFunction(char s[]) {
+  if(strcmp(s, "sin") == 0) {
+     push(sin(pop()));
+  } else if(strcmp(s, "exp") == 0) {
+    push(exp(pop()));
+  } else if(strcmp(s, "pow") == 0) {
+    push(pow(pop(), pop()));
+  }
+} 

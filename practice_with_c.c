@@ -1,6 +1,8 @@
 // Written by Andrew Levering and Jan-Edward Gierlach
-
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <ctype.h>
 
 void copy (char src[], char dest[]);
 int strlength(char str[]);
